@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>find-friends</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            background-color: grey;
+            border: 1px solid rgb(255, 255, 255);
+            overflow: hidden;
+
+
+            font-family: sans-serif;
+        }
+
+        div {
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+            z-index: -1;
+        }
+
+        h3 {
+            color: grey;
+            position: absolute;
+        }
+        @media screen and (min-width: 1024px) {
+             {
+                font-size: larger;
+                color: black;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div></div>
+    <h3>Saad</h3>
+    <h3>Houssam</h3>
+    <h3>lambi</h3>
+    <script>
+        const maxX = window.innerWidth;
+        const maxY = window.innerHeight;
+        const div = document.querySelector("div")
+        const pars = document.querySelectorAll("h3")
+
+
+        let random = () => {
+
+            for (let i = 0; i < 3; i++) {
+                pars[0].style.cssText = `top: ${Math.floor(Math.random() * maxY)-10}px; left:${Math.floor(Math.random() * maxX)+1}px;`
+                pars[1].style.cssText = `top: ${Math.floor(Math.random() * maxY)-10}px; left:${Math.floor(Math.random() * maxX)+1}px;`
+                pars[2].style.cssText = `top: ${Math.floor(Math.random() * maxY)-101}px; left:${Math.floor(Math.random() * maxX)+1}px;`  
+            }
+
+        }
+        //computedStyle.fontSize
+        const computedStyle = window.getComputedStyle(pars[1]);
+        div.style.cssText = `width:${computedStyle.width}; height: ${computedStyle.height}; `
+
+        window.addEventListener("mousedown", (event) => {
+            div.style.top = `${event.pageY}px`
+            div.style.left = `${event.pageX}px`
+        })
+        window.addEventListener("touchstart", (event) => {
+            div.style.top = `${event.pageY}px`
+            div.style.left = `${event.pageX}px`
+        })
+        random()
+    </script>
+</body>
+
+</html>
