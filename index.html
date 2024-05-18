@@ -4,72 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>find-friends</title>
+    <title>Magnifying Glass Effect</title>
     <style>
         body {
+            background-color: #f0f0f0;
+            position: relative;
             height: 100vh;
             margin: 0;
-            background-color: grey;
-            border: 1px solid rgb(255, 255, 255);
             overflow: hidden;
-
-
-            font-family: sans-serif;
         }
 
-        div {
+        .word {
             position: absolute;
-            background-color: rgb(255, 255, 255);
+            color: #f0f0f0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .magnifier {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background-image: url('mg.png');
+            /* Replace with your image */
+            background-size: cover;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .reveal {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: white;
             z-index: -1;
-        }
-
-        h3 {
-            color: grey;
-            position: absolute;
-        }
-        @media screen and (min-width: 1024px) {
-             {
-                font-size: larger;
-                color: black;
-            }
         }
     </style>
 </head>
 
 <body>
-    <div></div>
-    <h3>Saad</h3>
-    <h3>Houssam</h3>
-    <h3>lambi</h3>
+    <div class="word" style="top: 50px; left: 100px;">Word1</div>
+    <div class="word" style="top: 200px; left: 300px;">Word2</div>
+    <div class="word" style="top: 400px; left: 600px;">Word3</div>
+    <div class="magnifier"></div>
+    <div class="reveal"></div>
+
     <script>
-        const maxX = window.innerWidth;
-        const maxY = window.innerHeight;
-        const div = document.querySelector("div")
-        const pars = document.querySelectorAll("h3")
+        const magnifier = document.querySelector('.magnifier');
+        const reveal = document.querySelector('.reveal');
 
 
-        let random = () => {
+        const mediaQuery = window.matchMedia('(max-width: 767px), (hover: none) and (pointer: coarse)');
 
-            for (let i = 0; i < 3; i++) {
-                pars[0].style.cssText = `top: ${Math.floor(Math.random() * maxY)-10}px; left:${Math.floor(Math.random() * maxX)+1}px;`
-                pars[1].style.cssText = `top: ${Math.floor(Math.random() * maxY)-10}px; left:${Math.floor(Math.random() * maxX)+1}px;`
-                pars[2].style.cssText = `top: ${Math.floor(Math.random() * maxY)-101}px; left:${Math.floor(Math.random() * maxX)+1}px;`  
+        function handleDeviceChange(e) {
+            if (e.matches) {
+                document.addEventListener("touchmove", function (event) {
+                    const mouseX = event.clientX;
+                    const mouseY = event.clientY;
+
+                    magnifier.style.left = (mouseX - magnifier.offsetWidth / 2) + 'px';
+                    magnifier.style.top = (mouseY - magnifier.offsetHeight / 2) + 'px';
+
+                    reveal.style.left = (mouseX - reveal.offsetWidth + 45) + 'px';
+                    reveal.style.top = (mouseY - reveal.offsetHeight + 25) + 'px';
+                });
+            } else {
+                document.addEventListener('mousemove', function (event) {
+                    const mouseX = event.clientX;
+                    const mouseY = event.clientY;
+
+                    magnifier.style.left = (mouseX - magnifier.offsetWidth / 2) + 'px';
+                    magnifier.style.top = (mouseY - magnifier.offsetHeight / 2) + 'px';
+
+                    reveal.style.left = (mouseX - reveal.offsetWidth + 45) + 'px';
+                    reveal.style.top = (mouseY - reveal.offsetHeight + 25) + 'px';
+                });
             }
-
         }
-        //computedStyle.fontSize
-        const computedStyle = window.getComputedStyle(pars[1]);
-        div.style.cssText = `width:${computedStyle.width}; height: ${computedStyle.height}; `
 
-        window.addEventListener("mousedown", (event) => {
-            div.style.top = `${event.pageY}px`
-            div.style.left = `${event.pageX}px`
-        })
-        window.addEventListener("touchstart", (event) => {
-            div.style.top = `${event.pageY}px`
-            div.style.left = `${event.pageX}px`
-        })
-        random()
+        // Initial check
+        handleDeviceChange(mediaQuery);
+
+        // Add a listener for changes to the media query
+        mediaQuery.addEventListener('change', handleDeviceChange);
     </script>
 </body>
 
